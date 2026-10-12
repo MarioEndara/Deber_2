@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Pago y Facturación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Tarjeta con los datos de la compra recibidos de Tab1 -->
+  <ion-card *ngIf="datosCompra">
+    <ion-card-header>
+      <ion-card-title>Resumen de la Compra</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Producto:</strong> {{ datosCompra.nombre || datosCompra.producto }}</p>
+      <p><strong>Cantidad:</strong> {{ datosCompra.cantidad }}</p>
+      <p><strong>Precio Unitario:</strong> ${{ datosCompra.precio || datosCompra.precioUnitario }}</p>
+      <p><strong>Subtotal:</strong> ${{ datosCompra.subtotal || (datosCompra.cantidad * datosCompra.precio) }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mensaje si no hay datos -->
+  <ion-card *ngIf="!datosCompra">
+    <ion-card-content>
+      <p class="ion-text-center">No hay una compra registrada. Por favor, ve a la pestaña Compra e ingresa los datos.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Formulario para ingresar descuento y dinero entregado -->
+  <ion-item class="ion-margin-top">
+    <ion-input label="Descuento (%)" labelPlacement="stacked" type="number" [(ngModel)]="descuento" placeholder="Ej. 10"></ion-input>
+  </ion-item>
+
+  <ion-item class="ion-margin-top">
+    <ion-input label="Dinero Entregado ($)" labelPlacement="stacked" type="number" [(ngModel)]="dineroEntregado" placeholder="Ej. 100"></ion-input>
+  </ion-item>
+
+  <!-- Botón de cálculo -->
+  <ion-button expand="block" class="ion-margin-top" (click)="calcularPago()">
+    CALCULAR PAGO
+  </ion-button>
+
+  <!-- Tarjeta con los resultados del cálculo -->
+  <ion-card *ngIf="calculado" class="ion-margin-top">
+    <ion-card-header>
+      <ion-card-title>Resultado de la Transacción</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Total a Pagar (con descuento):</strong> ${{ totalFinal.toFixed(2) }}</p>
+      <p><strong>Cambio / Vuelto:</strong> ${{ cambio >= 0 ? cambio.toFixed(2) : 'Dinero insuficiente' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
