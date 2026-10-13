@@ -41,13 +41,18 @@
   </ion-button>
 
   <!-- Tarjeta con los resultados del cálculo -->
-  <ion-card *ngIf="calculado" class="ion-margin-top">
+<ion-card *ngIf="calculado" class="ion-margin-top">
     <ion-card-header>
       <ion-card-title>Resultado de la Transacción</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <p><strong>Total a Pagar (con descuento):</strong> ${{ totalFinal.toFixed(2) }}</p>
-      <p><strong>Cambio / Vuelto:</strong> ${{ cambio >= 0 ? cambio.toFixed(2) : 'Dinero insuficiente' }}</p>
+      
+      <!-- Mensaje dinámico que cambia de color según si el pago está completo o falta saldo -->
+      <p [style.color]="esSaldoInsuficiente ? 'var(--ion-color-danger)' : 'var(--ion-color-success)'" 
+         style="font-size: 1.1em; font-weight: bold; margin-top: 15px;">
+        {{ mensajeResultado }}
+      </p>
     </ion-card-content>
   </ion-card>
 

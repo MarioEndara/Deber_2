@@ -37,6 +37,9 @@ export class Tab2Page implements OnInit {
   
   totalFinal: number = 0;
   cambio: number = 0;
+  saldoPendiente: number = 0;
+  esSaldoInsuficiente: boolean = false;
+  mensajeResultado: string = '';
   calculado: boolean = false;
   Math = Math;
 
@@ -52,10 +55,15 @@ export class Tab2Page implements OnInit {
     this.calculado = false;
     this.descuento = 0;
     this.dineroEntregado = 0;
+    this.totalFinal = 0;
+    this.cambio = 0;
+    this.saldoPendiente = 0;
+    this.esSaldoInsuficiente = false;
+    this.mensajeResultado = '';
   }
 
   async calcularPago() {
-    // Verificamos que existan los datos de la compra (usando 'nombre' o 'cantidad' que vienen de tab1)
+    // Verificamos que existan los datos de la compra
     if (!this.datosCompra || (!this.datosCompra.nombre && !this.datosCompra.producto)) {
       this.mostrarAlerta('Advertencia', 'Primero debes registrar una compra en la pestaña anterior.');
       return;
@@ -78,7 +86,20 @@ export class Tab2Page implements OnInit {
 
     const valorDescuento = subtotal * (this.descuento / 100);
     this.totalFinal = subtotal - valorDescuento;
-    this.cambio = this.dineroEntregado - this.totalFinal;
+
+    // Validación de dinero entregado vs Total Final
+    if (this.dineroEntregado < this.totalFinal) {
+      this.esSaldoInsuficiente = true;
+      this.saldoPendiente = this.totalFinal - this.dineroEntregado;
+      this.cambio = 0;
+      this.mensajeResultado = `Saldo insuficiente. Faltan $${this.saldoPendiente.toFixed(2)} por pagar.`;
+    } else {
+      this.esSaldoInsuficiente = false;
+      this.saldoPendiente = 0;
+      this.cambio = this.dineroEntregado - this.totalFinal;
+      this.mensajeResultado = `Pago completado. Su cambio es: $${this.cambio.toFixed(2)}`;
+    }
+
     this.calculado = true;
   }
 
