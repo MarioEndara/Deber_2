@@ -38,7 +38,7 @@ compra-app/
 └── README.md                      Documentación del repositorio
 
 INSTALACIÓN Y EJECUCIÓN LOCAL
-git clone [https://github.com/MarioEndara/compra-app.git]
+git clone [https://github.com/MarioEndara/Deber_2.git]
 cd compra-app
 
 Instalación de dependencias
